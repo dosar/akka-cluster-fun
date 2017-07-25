@@ -18,9 +18,9 @@ class WorkingDaysActor extends Actor with ActorLogging {
   override def receive: Receive = clusterMembership orElse {
 
     case GetWorkingDays(year, Some(month)) =>
-      val monthOfYear = new YearMonth(year, month)
+      val monthOfYear = YearMonth.of(year, month)
       val result = (1 to monthOfYear.lengthOfMonth())
-        .count(day => new LocalDate(year, month, day).getDayOfWeek.getValue < 6)
+        .count(day => LocalDate.of(year, month, day).getDayOfWeek.getValue < 6)
       sender() ! Result(result)
   }
 

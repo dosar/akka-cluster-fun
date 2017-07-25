@@ -18,9 +18,9 @@ lazy val root = (Project("akka-distributed-config-service-root", file("."))
 lazy val configService = (Project("akka-distributed-config-service", file("service"))
   settings (moduleName := "akka-distributed-config-service")
   settings basicSettings
-  settings (libraryDependencies ++= Seq(akkaCluster)))
+  settings (libraryDependencies ++= Seq(akka, akkaCluster)))
 
 lazy val clusterManagement = (Project("config-service-cluster-management", file("cluster-management"))
   settings (moduleName := "config-service-cluster-management")
   settings basicSettings
-  settings (libraryDependencies ++= Seq(akkaCluster, akkaClusterManagement)))
+  settings (libraryDependencies ++= Seq(akka, akkaCluster, akkaClusterManagement)))
