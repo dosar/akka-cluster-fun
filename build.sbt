@@ -13,14 +13,26 @@ lazy val basicSettings = Seq(
 lazy val root = (Project("akka-distributed-config-service-root", file("."))
   settings (moduleName := "akka-distributed-config-service-root")
   settings basicSettings
-  aggregate (configService, clusterManagement))
+  aggregate (configService, clusterManagement, clusterClient))
 
 lazy val configService = (Project("akka-distributed-config-service", file("service"))
   settings (moduleName := "akka-distributed-config-service")
   settings basicSettings
-  settings (libraryDependencies ++= Seq(akka, akkaCluster)))
+  settings (libraryDependencies ++= Seq(akka, akkaCluster, akkaTools))
+  dependsOn serviceProtocol)
 
 lazy val clusterManagement = (Project("config-service-cluster-management", file("cluster-management"))
   settings (moduleName := "config-service-cluster-management")
   settings basicSettings
   settings (libraryDependencies ++= Seq(akka, akkaCluster, akkaClusterManagement)))
+
+lazy val clusterClient = (Project("config-service-client", file("config-client"))
+  settings (moduleName := "config-service-client")
+  settings basicSettings
+  settings (libraryDependencies ++= Seq(akka, akkaCluster, akkaTools))
+  dependsOn serviceProtocol)
+
+lazy val serviceProtocol = (Project("config-service-protocol", file("service-protocol"))
+  settings (moduleName := "config-service-protocol")
+  settings basicSettings
+  settings (libraryDependencies ++= Seq(akkaTools)))

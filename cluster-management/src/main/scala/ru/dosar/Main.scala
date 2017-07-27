@@ -4,8 +4,8 @@ import akka.actor.ActorSystem
 import akka.cluster.Cluster
 import akka.cluster.http.management.ClusterHttpManagement
 
-class Main extends App {
-  val system = ActorSystem()
+object Main extends App {
+  val system = ActorSystem("dosar")
   val cluster = Cluster(system)
   ClusterHttpManagement(cluster).start()
 }

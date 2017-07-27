@@ -5,7 +5,7 @@ import java.time.{LocalDate, YearMonth}
 import akka.actor.{Actor, ActorLogging}
 import akka.cluster.Cluster
 import akka.cluster.ClusterEvent._
-import ru.dosar.actor.WorkingDaysActor.{GetWorkingDays, Result}
+import ru.dosar.service.protocol.WorkingDaysActor.{GetWorkingDays, Result}
 
 class WorkingDaysActor extends Actor with ActorLogging {
 
@@ -17,7 +17,8 @@ class WorkingDaysActor extends Actor with ActorLogging {
 
   override def receive: Receive = clusterMembership orElse {
 
-    case GetWorkingDays(year, Some(month)) =>
+    case gwd @ GetWorkingDays(year, Some(month)) =>
+      log.info("got {}", gwd)
       val monthOfYear = YearMonth.of(year, month)
       val result = (1 to monthOfYear.lengthOfMonth())
         .count(day => LocalDate.of(year, month, day).getDayOfWeek.getValue < 6)
@@ -33,9 +34,4 @@ class WorkingDaysActor extends Actor with ActorLogging {
       log.info("Member is Removed: {} after {}", member.address, previousStatus)
     case e: MemberEvent => log.info("got member event '{}'", e)
   }
-}
-
-object WorkingDaysActor {
-  case class GetWorkingDays(year: Int, month: Option[Int])
-  case class Result(workingDays: Int)
 }
