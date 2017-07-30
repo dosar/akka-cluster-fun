@@ -13,7 +13,7 @@ lazy val basicSettings = Seq(
 lazy val root = (Project("akka-distributed-config-service-root", file("."))
   settings (moduleName := "akka-distributed-config-service-root")
   settings basicSettings
-  aggregate (configService, clusterManagement, clusterClient))
+  aggregate (configService, clusterManagement, clusterClient, serviceProtocol))
 
 lazy val configService = (Project("akka-distributed-config-service", file("service"))
   settings (moduleName := "akka-distributed-config-service")
@@ -35,4 +35,4 @@ lazy val clusterClient = (Project("config-service-client", file("config-client")
 lazy val serviceProtocol = (Project("config-service-protocol", file("service-protocol"))
   settings (moduleName := "config-service-protocol")
   settings basicSettings
-  settings (libraryDependencies ++= Seq(akkaTools)))
+  settings (libraryDependencies ++= Seq(akkaTools, scalaTest)))
